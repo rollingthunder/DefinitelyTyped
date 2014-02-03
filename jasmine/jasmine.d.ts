@@ -26,7 +26,7 @@ declare function expect(actual: any): jasmine.Matchers;
 declare function spyOn(object: any, method: string): jasmine.Spy;
 
 declare function runs(asyncMethod: Function): void;
-declare function waitsFor(latchMethod: () => boolean, failureMessage?: string, timeout?: number): void;
+declare function waitsFor(latchMethod: () => bool, failureMessage?: string, timeout?: number): void;
 declare function waits(timeout?: number): void;
 
 declare module jasmine {
@@ -37,7 +37,7 @@ declare module jasmine {
     function objectContaining(sample: any): ObjectContaining;
     function createSpy(name: string, originalFn?: Function): Spy;
     function createSpyObj(baseName: string, methodNames: any[]): any;
-    function createSpyObj<T>(baseName: string, methodNames: any[]): T;
+    //function createSpyObj<T>(baseName: string, methodNames: any[]): T;
     function pp(value: any): string;
     function getEnv(): Env;
 
@@ -45,14 +45,14 @@ declare module jasmine {
 
         new (expectedClass: any): any;
 
-        jasmineMatches(other: any): boolean;
+        jasmineMatches(other: any): bool;
         jasmineToString(): string;
     }
 
     interface ObjectContaining {
         new (sample: any): any;
 
-        jasmineMatches(other: any, mismatchKeys: any[], mismatchValues: any[]): boolean;
+        jasmineMatches(other: any, mismatchKeys: any[], mismatchValues: any[]): bool;
         jasmineToString(): string;
     }
 
@@ -101,12 +101,12 @@ declare module jasmine {
         xdescribe(desc: string, specDefinitions: () => void): XSuite;
         it(description: string, func: () => void): Spec;
         xit(desc: string, func: () => void): XSpec;
-        compareRegExps_(a: RegExp, b: RegExp, mismatchKeys: string[], mismatchValues: string[]): boolean;
-        compareObjects_(a: any, b: any, mismatchKeys: string[], mismatchValues: string[]): boolean;
-        equals_(a: any, b: any, mismatchKeys: string[], mismatchValues: string[]): boolean;
-        contains_(haystack: any, needle: any): boolean;
-        addEqualityTester(equalityTester: (a: any, b: any, env: Env, mismatchKeys: string[], mismatchValues: string[]) => boolean): void;
-        specFilter(spec: Spec): boolean;
+        compareRegExps_(a: RegExp, b: RegExp, mismatchKeys: string[], mismatchValues: string[]): bool;
+        compareObjects_(a: any, b: any, mismatchKeys: string[], mismatchValues: string[]): bool;
+        equals_(a: any, b: any, mismatchKeys: string[], mismatchValues: string[]): bool;
+        contains_(haystack: any, needle: any): bool;
+        addEqualityTester(equalityTester: (a: any, b: any, env: Env, mismatchKeys: string[], mismatchValues: string[]) => bool): void;
+        specFilter(spec: Spec): bool;
     }
 
     interface FakeTimer {
@@ -116,7 +116,7 @@ declare module jasmine {
         reset(): void;
         tick(millis: number): void;
         runFunctionsWithinRange(oldMillis: number, nowMillis: number): void;
-        scheduleFunction(timeoutKey: any, funcToCall: () => void, millis: number, recurring: boolean): void;
+        scheduleFunction(timeoutKey: any, funcToCall: () => void, millis: number, recurring: bool): void;
     }
 
     interface HtmlReporter {
@@ -138,13 +138,13 @@ declare module jasmine {
         passedCount: number;
         failedCount: number;
 
-        skipped: boolean;
+        skipped: bool;
 
         rollupCounts(result: NestedResults): void;
         log(values: any): void;
         getItems(): Result[];
         addResult(result: Result): void;
-        passed(): boolean;
+        passed(): bool;
     }
 
     interface MessageResult extends Result  {
@@ -154,7 +154,7 @@ declare module jasmine {
 
     interface ExpectationResult extends Result  {
         matcherName: string;
-        passed(): boolean;
+        passed(): bool;
         expected: any;
         actual: any;
         message: string;
@@ -172,7 +172,7 @@ declare module jasmine {
         new (): any;
 
         format(value: any): void;
-        iterateObject(obj: any, fn: (property: string, isGetter: boolean) => void): void;
+        iterateObject(obj: any, fn: (property: string, isGetter: bool) => void): void;
         emitScalar(value: any): void;
         emitString(value: string): void;
         emitArray(array: any[]): void;
@@ -188,56 +188,56 @@ declare module jasmine {
         new (env: any): any;
 
         env: Env;
-        ensured: boolean[];
+        ensured: bool[];
         blocks: Block[];
-        running: boolean;
+        running: bool;
         index: number;
         offset: number;
-        abort: boolean;
+        abort: bool;
 
-        addBefore(block: Block, ensure?: boolean): void;
-        add(block: any, ensure?: boolean): void;
-        insertNext(block: any, ensure?: boolean): void;
+        addBefore(block: Block, ensure?: bool): void;
+        add(block: any, ensure?: bool): void;
+        insertNext(block: any, ensure?: bool): void;
         start(onComplete?: () => void): void;
-        isRunning(): boolean;
+        isRunning(): bool;
         next_(): void;
         results(): NestedResults;
     }
 
     interface Matchers {
 
-        new (env: Env, actual: any, spec: Env, isNot?: boolean): any;
+        new (env: Env, actual: any, spec: Env, isNot?: bool): any;
 
         env: Env;
         actual: any;
         spec: Env;
-        isNot?: boolean;
+        isNot?: bool;
         message(): any;
 
-        toBe(expected: any): boolean;
-        toNotBe(expected: any): boolean;
-        toEqual(expected: any): boolean;
-        toNotEqual(expected: any): boolean;
-        toMatch(expected: any): boolean;
-        toNotMatch(expected: any): boolean;
-        toBeDefined(): boolean;
-        toBeUndefined(): boolean;
-        toBeNull(): boolean;
-        toBeNaN(): boolean;
-        toBeTruthy(): boolean;
-        toBeFalsy(): boolean;
-        toHaveBeenCalled(): boolean;
-        wasNotCalled(): boolean;
-        toHaveBeenCalledWith(...params: any[]): boolean;
-        toContain(expected: any): boolean;
-        toNotContain(expected: any): boolean;
-        toBeLessThan(expected: any): boolean;
-        toBeGreaterThan(expected: any): boolean;
-        toBeCloseTo(expected: any, precision: any): boolean;
-        toContainHtml(expected: string): boolean;
-        toContainText(expected: string): boolean;
-        toThrow(expected?: any): boolean;
-        toThrowError(expected?: any): boolean;
+        toBe(expected: any): bool;
+        toNotBe(expected: any): bool;
+        toEqual(expected: any): bool;
+        toNotEqual(expected: any): bool;
+        toMatch(expected: any): bool;
+        toNotMatch(expected: any): bool;
+        toBeDefined(): bool;
+        toBeUndefined(): bool;
+        toBeNull(): bool;
+        toBeNaN(): bool;
+        toBeTruthy(): bool;
+        toBeFalsy(): bool;
+        toHaveBeenCalled(): bool;
+        wasNotCalled(): bool;
+        toHaveBeenCalledWith(...params: any[]): bool;
+        toContain(expected: any): bool;
+        toNotContain(expected: any): bool;
+        toBeLessThan(expected: any): bool;
+        toBeGreaterThan(expected: any): bool;
+        toBeCloseTo(expected: any, precision: any): bool;
+        toContainHtml(expected: string): bool;
+        toContainText(expected: string): bool;
+        toThrow(expected?: any): bool;
+        toThrowError(expected?: any): bool;
         not: Matchers;
 
         Any: Any;
@@ -313,7 +313,7 @@ declare module jasmine {
         execute(onComplete?: () => void): any;
         addBeforesAndAftersToQueue(): void;
         explodes(): void;
-        spyOn(obj: any, methodName: string, ignoreMethodDoesntExist: boolean): Spy;
+        spyOn(obj: any, methodName: string, ignoreMethodDoesntExist: bool): Spy;
         removeAllSpies(): void;
     }
 
@@ -347,26 +347,41 @@ declare module jasmine {
     interface Spy {
         (...params: any[]): any;
 
-        identity: string;
-        and: SpyAnd;
-        calls: any[];
-        mostRecentCall: { args: any[]; };
-        argsForCall: any[];
-        wasCalled: boolean;
-        callCount: number;
+        and: SpyStrategy;
+        calls: CallTracker;
     }
 
-    interface SpyAnd {
+    interface CallTracker {
+        any(): bool;
+        count(): Number;
+        argsFor(index): any[];
+        all(): CallContext[];
+        allArgs(): any[][];
+        first(): CallContext;
+        mostRecent(): CallContext;
+        reset();
+    }
+
+    interface CallContext {
+        object: any;
+        args: any[];
+    }
+
+    interface SpyStrategy {
         /** By chaining the spy with and.callThrough, the spy will still track all calls to it but in addition it will delegate to the actual implementation. */
-        callThrough(): void;
+        callThrough(): Spy;
         /** By chaining the spy with and.returnValue, all calls to the function will return a specific value. */
-        returnValue(val: any): void;
+        returnValue(val: any): Spy;
         /** By chaining the spy with and.callFake, all calls to the spy will delegate to the supplied function. */
-        callFake(fn: () => any): void;
+        callFake(fn: () => any): Spy;
         /** By chaining the spy with and.throwError, all calls to the spy will throw the specified value. */
-        throwError(msg: string): void;
+        throwError(msg: string): Spy;
         /** When a calling strategy is used for a spy, the original stubbing behavior can be returned at any time with and.stub. */
-        stub(): void;
+        stub(): Spy;
+
+        getSpy(): Spy;
+        identity(): String;
+        exec(...params: any[]): any
     }
 
     interface Util {
@@ -379,8 +394,8 @@ declare module jasmine {
 
     interface JsApiReporter extends Reporter {
 
-        started: boolean;
-        finished: boolean;
+        started: bool;
+        finished: bool;
         result: any;
         messages: any;
 
